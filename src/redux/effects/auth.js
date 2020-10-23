@@ -1,4 +1,5 @@
-import { all, takeLatest, put, call } from 'redux-saga/effects';
+import { all, takeLatest, put, call, select } from 'redux-saga/effects';
+import { push } from 'connected-react-router';
 import { authActions, AUTH_ACTIONS } from '../reducers/auth';
 import authApi from '../api/auth';
 import { getErrorMessage } from '../../utils/api';
@@ -9,11 +10,10 @@ function* register({ value }) {
       data: { data },
     } = yield call(authApi.register, value);
 
-    if (data) {
-      console.log(data);
+    if (data.confirm_token) {
+      yield put(authActions.register(data.confirm_token));
     }
   } catch (error) {
-    console.log(getErrorMessage(error));
     yield put(authActions.error(getErrorMessage(error)));
   }
 }
@@ -21,14 +21,23 @@ function* register({ value }) {
 function* confirmOtp({ value }) {
   try {
     const {
+      auth: { confirm_token },
+    } = yield select();
+
+    const {
       data: { data },
-    } = yield call(authApi.confirmOtp, value.payload, value.token);
-    if (data) {
-      console.log(data);
+    } = yield call(authApi.confirmOtp, value, `Bearer ${confirm_token.key}`);
+
+    if (data.register_token) {
+      yield put(authActions.confirmOtp(data.register_token));
     }
   } catch (error) {
-    console.log(getErrorMessage(error));
-    yield put(authActions.error(getErrorMessage(error)));
+    if (error.response && error.response.data && error.response.data.included === 'unmatch_otp') {
+      yield put(authActions.error(getErrorMessage(error)));
+    } else {
+      yield put(authActions.setData('confirm_token', null));
+      yield put(push('/register'));
+    }
   }
 }
 
@@ -36,7 +45,7 @@ function* registerComplete({ value }) {
   try {
     const {
       data: { data },
-    } = yield call(authApi.registerComplete, value.payload, value.token);
+    } = yield call(authApi.registerComplete, value);
     if (data) {
       console.log(data);
     }

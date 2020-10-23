@@ -40,7 +40,7 @@ export const authActions = Object.freeze({
     type: AUTH_ACTIONS.REGISTER_COMPLETE,
   }),
   error: (value) => ({
-    type: AUTH_ACTIONS.SET_DATA,
+    type: AUTH_ACTIONS.ERROR,
     value,
   }),
   clearError: () => ({
@@ -49,8 +49,10 @@ export const authActions = Object.freeze({
 });
 
 const initalState = {
+  is_authorized: false,
+  confirm_token: null,
   register_token: null,
-  register_complete_token: null,
+  login_token: null,
   loading: false,
   is_error: false,
   message: '',
@@ -73,22 +75,24 @@ const reducer = (state = initalState, { type, field, value }) => {
     case AUTH_ACTIONS.REGISTER:
       return {
         ...state,
-        register_token: value,
+        confirm_token: value,
+        register_token: null,
         loading: false,
         is_error: false,
       };
     case AUTH_ACTIONS.CONFIRM_OTP:
       return {
         ...state,
-        register_complete_token: value,
+        confirm_token: null,
+        register_token: value,
         loading: false,
         is_error: false,
       };
     case AUTH_ACTIONS.REGISTER_COMPLETE:
       return {
         ...state,
+        confirm_token: null,
         register_token: null,
-        register_complete_token: null,
         loading: false,
         is_error: false,
       };

@@ -25,7 +25,7 @@ export const history = createBrowserHistory();
 const sagaMiddleware = createSagaMiddleware();
 const middleware = [sagaMiddleware, thunkMiddleware, routerMiddleware(history)];
 
-const persistReducers = persistReducer(persistConfig, rootReducers);
+const persistReducers = persistReducer(persistConfig, rootReducers(history));
 
 export const store = createStore(
   persistReducers,
