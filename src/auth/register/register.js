@@ -18,7 +18,7 @@ const mapActionToProps = (dispatch) =>
   bindActionCreators(
     {
       register: authActions.reqRegister,
-      clearMsg: authActions.clearError,
+      clearMsg: authActions.clearMsg,
     },
     dispatch
   );
@@ -100,8 +100,14 @@ const Register = ({ isError, loading, message, register, clearMsg }) => {
                 <span className="link-word"> Masuk</span>
               </div>
               <div className="oauth-wrapper">
-                <div className="oauth">Facebook</div>
-                <div className="oauth">Google</div>
+                <div className="oauth">
+                  <img src="/assets/icons/ic_facebook.png" alt="facebook" />
+                  <span>Facebook</span>
+                </div>
+                <div className="oauth">
+                  <img src="/assets/icons/ic_google.png" alt="facebook" />
+                  <span>Google</span>
+                </div>
               </div>
               <span className="auth-separator">Atau daftar dengan</span>
               <form onSubmit={handleSubmit}>

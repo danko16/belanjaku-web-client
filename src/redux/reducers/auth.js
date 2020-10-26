@@ -6,8 +6,9 @@ export const AUTH_ACTIONS = Object.freeze({
   REGISTER: 'belanjaku/auth/register',
   CONFIRM_OTP: 'belanjaku/auth/confirm-otp',
   REGISTER_COMPLETE: 'belanjaku/auth/register-complete',
-  ERROR: 'belanjaku/auth/error',
-  CLEAR_ERROR: 'belanjaku/auth/clear-error',
+  MESSAGE: 'belanjaku/auth/message',
+  CLEAR_MESSAGE: 'belanjaku/auth/clear-message',
+  LOGOUT: 'belanjaku/auth/logout',
 });
 
 export const authActions = Object.freeze({
@@ -36,23 +37,28 @@ export const authActions = Object.freeze({
     type: AUTH_ACTIONS.CONFIRM_OTP,
     value,
   }),
-  registerComplete: () => ({
+  registerComplete: (value) => ({
     type: AUTH_ACTIONS.REGISTER_COMPLETE,
-  }),
-  error: (value) => ({
-    type: AUTH_ACTIONS.ERROR,
     value,
   }),
-  clearError: () => ({
-    type: AUTH_ACTIONS.CLEAR_ERROR,
+  message: (value) => ({
+    type: AUTH_ACTIONS.MESSAGE,
+    value,
   }),
+  clearMsg: () => ({
+    type: AUTH_ACTIONS.CLEAR_MESSAGE,
+  }),
+  logout: () => ({ type: AUTH_ACTIONS.LOGOUT }),
 });
 
 const initalState = {
   is_authorized: false,
   confirm_token: null,
   register_token: null,
+  register_email: null,
+  register_phone: null,
   login_token: null,
+  user: null,
   loading: false,
   is_error: false,
   message: '',
@@ -75,7 +81,9 @@ const reducer = (state = initalState, { type, field, value }) => {
     case AUTH_ACTIONS.REGISTER:
       return {
         ...state,
-        confirm_token: value,
+        confirm_token: value.confirm_token,
+        register_email: value.email,
+        register_phone: value.phone,
         register_token: null,
         loading: false,
         is_error: false,
@@ -91,25 +99,32 @@ const reducer = (state = initalState, { type, field, value }) => {
     case AUTH_ACTIONS.REGISTER_COMPLETE:
       return {
         ...state,
+        is_authorized: true,
+        login_token: value.login_token,
+        user: value.user,
         confirm_token: null,
         register_token: null,
+        register_email: null,
+        register_phone: null,
         loading: false,
         is_error: false,
       };
-    case AUTH_ACTIONS.ERROR:
+    case AUTH_ACTIONS.MESSAGE:
       return {
         ...state,
         loading: false,
-        is_error: true,
-        message: value,
+        is_error: value.is_error,
+        message: value.message,
       };
-    case AUTH_ACTIONS.CLEAR_ERROR:
+    case AUTH_ACTIONS.CLEAR_MESSAGE:
       return {
         ...state,
         loading: false,
         is_error: false,
         message: '',
       };
+    case AUTH_ACTIONS.LOGOUT:
+      return initalState;
     default:
       return state;
   }

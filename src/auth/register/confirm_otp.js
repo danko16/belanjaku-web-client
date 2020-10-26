@@ -16,7 +16,7 @@ const mapStateToProps = (state) => ({
 
 const mapActionToProps = (dispatch) =>
   bindActionCreators(
-    { confirmOtp: authActions.reqConfirmOtp, clearMsg: authActions.clearError },
+    { confirmOtp: authActions.reqConfirmOtp, clearMsg: authActions.clearMsg },
     dispatch
   );
 

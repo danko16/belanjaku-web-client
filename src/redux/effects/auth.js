@@ -11,10 +11,17 @@ function* register({ value }) {
     } = yield call(authApi.register, value);
 
     if (data.confirm_token) {
-      yield put(authActions.register(data.confirm_token));
+      const { confirm_token, email, phone } = data;
+      yield put(
+        authActions.register({
+          confirm_token,
+          register_email: email ? email : null,
+          register_phone: phone ? phone : null,
+        })
+      );
     }
   } catch (error) {
-    yield put(authActions.error(getErrorMessage(error)));
+    yield put(authActions.message({ is_error: true, message: getErrorMessage(error) }));
   }
 }
 
@@ -33,7 +40,7 @@ function* confirmOtp({ value }) {
     }
   } catch (error) {
     if (error.response && error.response.data && error.response.data.included === 'unmatch_otp') {
-      yield put(authActions.error(getErrorMessage(error)));
+      yield put(authActions.message({ is_error: true, message: getErrorMessage(error) }));
     } else {
       yield put(authActions.setData('confirm_token', null));
       yield put(push('/register'));
@@ -44,14 +51,17 @@ function* confirmOtp({ value }) {
 function* registerComplete({ value }) {
   try {
     const {
+      auth: { register_token },
+    } = yield select();
+    const {
       data: { data },
-    } = yield call(authApi.registerComplete, value);
+    } = yield call(authApi.registerComplete, value, `Bearer ${register_token.key}`);
     if (data) {
-      console.log(data);
+      yield put(authActions.registerComplete({ login_token: data.token, user: data.user }));
+      yield put(push('/'));
     }
   } catch (error) {
-    console.log(getErrorMessage(error));
-    yield put(authActions.error(getErrorMessage(error)));
+    yield put(authActions.message({ is_error: true, message: getErrorMessage(error) }));
   }
 }
 
@@ -63,7 +73,7 @@ function* authSaga() {
       takeLatest(AUTH_ACTIONS.REQ_REGISTER_COMPLETE, registerComplete),
     ]);
   } catch (error) {
-    yield put(authActions.error(getErrorMessage(error)));
+    yield put(authActions.message({ is_error: true, message: getErrorMessage(error) }));
   }
 }
 
