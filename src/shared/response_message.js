@@ -22,6 +22,13 @@ const ResponseMessage = ({ response, setResponse }) => {
         }
       >
         {response.message}
+        <i
+          className="fa fa-times cancel"
+          aria-hidden="true"
+          onClick={() => {
+            setResponse({ message: '', isError: false });
+          }}
+        ></i>
       </div>
     </div>
   );

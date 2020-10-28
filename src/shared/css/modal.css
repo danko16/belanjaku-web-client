@@ -24,20 +24,15 @@
   animation-duration: 0.4s;
 }
 
-.close {
+i.fa.fa-times.cancel {
   position: absolute;
-  color: #000;
   right: 12px;
-  top: 0;
-  font-size: 2.25em;
-  font-weight: bold;
+  cursor: pointer;
+  transition: opacity 100ms ease;
 }
 
-.close:hover,
-.close:focus {
-  color: gray;
-  text-decoration: none;
-  cursor: pointer;
+i.fa.fa-times.cancel:hover {
+  opacity: .8;
 }
 
 @-webkit-keyframes animatetop {

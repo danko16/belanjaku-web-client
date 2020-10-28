@@ -82,8 +82,8 @@ const reducer = (state = initalState, { type, field, value }) => {
       return {
         ...state,
         confirm_token: value.confirm_token,
-        register_email: value.email,
-        register_phone: value.phone,
+        register_email: value.register_email,
+        register_phone: value.register_phone,
         register_token: null,
         loading: false,
         is_error: false,

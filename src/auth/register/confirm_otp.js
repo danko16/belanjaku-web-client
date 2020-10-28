@@ -11,6 +11,8 @@ import './css/confirm_otp.css';
 const mapStateToProps = (state) => ({
   loading: state.auth.loading,
   message: state.auth.message,
+  email: state.auth.register_email,
+  phone: state.auth.register_phone,
   isError: state.auth.is_error,
 });
 
@@ -20,7 +22,7 @@ const mapActionToProps = (dispatch) =>
     dispatch
   );
 
-const ConfirmOtp = ({ confirmOtp, clearMsg, loading, message, isError }) => {
+const ConfirmOtp = ({ confirmOtp, clearMsg, email, phone, loading, message, isError }) => {
   const [otp, setOtp] = useState({
     firstInput: '',
     secondInput: '',
@@ -76,12 +78,13 @@ const ConfirmOtp = ({ confirmOtp, clearMsg, loading, message, isError }) => {
   return (
     <div className="confirm-otp">
       {response.message && <ResponseMessage response={response} setResponse={setResponse} />}
-      <div className="header">Verifikasi Email</div>
+      <div className="header">Verifikasi {email ? 'Email' : 'Nomor Telephone'}</div>
       <div className="content">
         <i className="fa fa-envelope" aria-hidden="true"></i>
         <h4>Masukkan Kode Verifikasi</h4>
         <div style={{ marginBottom: 36 }}>
-          Kode verifikasi telah dikirim melalui e-mail ke danangekoyudanto1999@gmail.com.
+          Kode verifikasi telah dikirim melalui {email ? 'email' : 'nomor telephone'} ke{' '}
+          {email ? email : phone}.
         </div>
         <form onSubmit={handleSubmit}>
           <div className="input-wrapper">
@@ -169,6 +172,8 @@ ConfirmOtp.propTypes = {
   isError: PropTypes.bool,
   confirmOtp: PropTypes.func,
   clearMsg: PropTypes.func,
+  email: PropTypes.string,
+  phone: PropTypes.string,
 };
 
 export default connect(mapStateToProps, mapActionToProps)(ConfirmOtp);

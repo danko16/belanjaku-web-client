@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import ClassNames from 'classnames';
+import { Link } from 'react-router-dom';
 import { authActions } from '../../redux/reducers/auth';
 import ResponseMessage from '../../shared/response_message';
 
@@ -69,7 +70,10 @@ const Register = ({ isError, loading, message, register, clearMsg }) => {
     <div className="register">
       {response.message && <ResponseMessage response={response} setResponse={setResponse} />}
       <div className="header">
-        <h1>Belanjaku</h1>
+        <div className="link-anchor">
+          <Link to="/" />
+          <img className="logo" src="/assets/icons/belanjaku.png" alt="logo" />
+        </div>
       </div>
       <div className="content container">
         <div className="row">
