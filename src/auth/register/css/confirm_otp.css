@@ -12,6 +12,7 @@
   max-width: 500px;
   margin: auto;
   text-align: center;
+  padding: 24px 24px 30px;
 }
 
 .confirm-otp .content .input-wrapper {

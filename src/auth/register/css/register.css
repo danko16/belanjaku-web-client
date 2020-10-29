@@ -12,6 +12,10 @@
   margin-top: 3rem;
 }
 
+.register .content .card-wrapper {
+  padding-left: 3rem;
+}
+
 .register .content .card {
   border: 1px solid #e0e0e0;
   border-radius: 3px !important;
@@ -24,6 +28,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  padding-right: 3rem;
 }
 
 .register .content .logo-wrapper .logo-cap {
@@ -40,12 +45,12 @@
 .register .content .oauth-wrapper {
   display: flex;
   margin: 1.4rem 0;
+  flex-wrap: wrap;
 }
 
 .register .content .oauth-wrapper .oauth {
   border: 1px solid #d8d8d8;
   padding: 8px 16px;
-  margin-right: 8px;
   flex: 1 1;
   text-align: center;
   border-radius: 5px;
@@ -54,6 +59,10 @@
   align-items: center;
   cursor: pointer;
   transition: border 150ms ease;
+}
+
+.register .content .oauth-wrapper .oauth:first-child {
+  margin-right: 8px;
 }
 
 .register .content .oauth-wrapper .oauth:hover {
@@ -94,7 +103,7 @@
 
 .register .footer {
   border-top: 1px solid #d8d8d8;
-  padding-top: 1rem;
+  padding: 1rem 0;
   margin-top: 8rem;
   text-align: center;
   font-size: 14px;
@@ -129,4 +138,36 @@
   font-size: 16px;
   top: 37px;
   cursor: pointer;
+}
+
+@media only screen and (max-width: 991px) {
+  .register .content .logo-wrapper {
+    align-items: center;
+    padding-right: 15px;
+    margin-bottom: 3rem;
+  }
+
+  .register .content .card-wrapper {
+    padding-left: 15px;
+  }
+
+  .register .content .card {
+    margin: auto;
+  }
+}
+
+@media only screen and (max-width: 420px) {
+  .register .content .oauth-wrapper .oauth {
+    justify-content: center;
+  }
+
+  .register .content .oauth-wrapper .oauth:first-child {
+    margin-right: 0;
+    flex-basis: 100%;
+    margin-bottom: 10px;
+  }
+
+  .register .content .oauth-wrapper .oauth img {
+    margin-right: 10px;
+  }
 }

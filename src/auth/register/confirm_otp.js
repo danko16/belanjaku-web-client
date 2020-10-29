@@ -158,9 +158,6 @@ const ConfirmOtp = ({ confirmOtp, clearMsg, email, phone, loading, message, isEr
             Verifikasi
           </button>
         </form>
-        <div>
-          Tidak menerima kode? <span className="link-word">Kirim ulang</span>
-        </div>
       </div>
     </div>
   );

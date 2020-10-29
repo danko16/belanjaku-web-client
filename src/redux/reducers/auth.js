@@ -81,6 +81,9 @@ const reducer = (state = initalState, { type, field, value }) => {
     case AUTH_ACTIONS.REGISTER:
       return {
         ...state,
+        is_authorized: false,
+        login_token: null,
+        user: null,
         confirm_token: value.confirm_token,
         register_email: value.register_email,
         register_phone: value.register_phone,
@@ -91,6 +94,9 @@ const reducer = (state = initalState, { type, field, value }) => {
     case AUTH_ACTIONS.CONFIRM_OTP:
       return {
         ...state,
+        is_authorized: false,
+        login_token: null,
+        user: null,
         confirm_token: null,
         register_token: value,
         loading: false,

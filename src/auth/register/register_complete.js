@@ -106,12 +106,7 @@ const RegisterComplete = ({ isError, loading, email, phone, message, register, c
       </div>
       <div className="content container">
         <div className="row">
-          <div
-            className="logo-wrapper col-md-6"
-            style={{
-              paddingRight: '3rem',
-            }}
-          >
+          <div className="logo-wrapper col-lg-6">
             <div style={{ maxWidth: 425 }}>
               <img className="img__cover" src="/assets/images/logo.jpg" alt="Logo" />
               <div className="logo-cap">
@@ -120,12 +115,7 @@ const RegisterComplete = ({ isError, loading, email, phone, message, register, c
               </div>
             </div>
           </div>
-          <div
-            className="col-md-6"
-            style={{
-              paddingLeft: '3rem',
-            }}
-          >
+          <div className="card-wrapper col-lg-6">
             <div className="card">
               <div className="head text-center">
                 <h3>Daftar dengan {email ? 'Email' : 'Telephone'}</h3>

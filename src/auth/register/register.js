@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import ClassNames from 'classnames';
 import { Link } from 'react-router-dom';
+import { SERVER_DOMAIN } from '../../utils/api';
 import { authActions } from '../../redux/reducers/auth';
 import ResponseMessage from '../../shared/response_message';
 
@@ -77,12 +78,7 @@ const Register = ({ isError, loading, message, register, clearMsg }) => {
       </div>
       <div className="content container">
         <div className="row">
-          <div
-            className="logo-wrapper col-md-6"
-            style={{
-              paddingRight: '3rem',
-            }}
-          >
+          <div className="logo-wrapper col-lg-6">
             <div style={{ maxWidth: 425 }}>
               <img className="img__cover" src="/assets/images/logo.jpg" alt="Logo" />
               <div className="logo-cap">
@@ -91,12 +87,7 @@ const Register = ({ isError, loading, message, register, clearMsg }) => {
               </div>
             </div>
           </div>
-          <div
-            className="col-md-6"
-            style={{
-              paddingLeft: '3rem',
-            }}
-          >
+          <div className="card-wrapper col-lg-6">
             <div className="card">
               <div className="head text-center">
                 <h3>Daftar Sekarang</h3>
@@ -104,12 +95,18 @@ const Register = ({ isError, loading, message, register, clearMsg }) => {
                 <span className="link-word"> Masuk</span>
               </div>
               <div className="oauth-wrapper">
-                <div className="oauth">
+                <div className="oauth link-anchor">
+                  <a href={`${SERVER_DOMAIN}/user/auth/facebook`}>
+                    <div className="d-none">Link Anchor</div>
+                  </a>
                   <img src="/assets/icons/ic_facebook.png" alt="facebook" />
                   <span>Facebook</span>
                 </div>
-                <div className="oauth">
-                  <img src="/assets/icons/ic_google.png" alt="facebook" />
+                <div className="oauth link-anchor">
+                  <a href={`${SERVER_DOMAIN}/user/auth/google`}>
+                    <div className="d-none">Link Anchor</div>
+                  </a>
+                  <img src="/assets/icons/ic_google.png" alt="google" />
                   <span>Google</span>
                 </div>
               </div>
