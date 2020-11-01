@@ -6,16 +6,19 @@ import { history } from './redux';
 import './App.css';
 
 import Register from './auth/register/';
+import Header from './shared/header';
+import Home from './home';
 
 function App() {
   return (
     <Router>
       <ConnectedRouter history={history}>
         <React.Suspense fallback={<div>Loading</div>}>
-          <div className="App">
+          <div className="App" style={{ height: '200vh' }}>
             <Switch>
               <Route exact path="/">
-                <div>Test</div>
+                <Header />
+                <Home />
               </Route>
               <Route path="/register" component={Register} />
               <Route>
