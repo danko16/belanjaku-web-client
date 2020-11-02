@@ -47,6 +47,8 @@ h5 {
 }
 
 .link-word:hover {
+  color: var(--primary);
+  text-decoration: none;
   opacity: 0.9;
 }
 

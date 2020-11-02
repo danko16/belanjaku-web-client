@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import ClassNames from 'classnames';
 import { Link } from 'react-router-dom';
+import { SERVER_DOMAIN } from '../../utils/api';
 import { authActions } from '../../redux/reducers/auth';
 import ResponseMessage from '../../shared/response_message';
 
@@ -12,26 +13,23 @@ import '../css/auth.css';
 const mapStateToProps = (state) => ({
   isError: state.auth.is_error,
   loading: state.auth.loading,
-  email: state.auth.register_email,
-  phone: state.auth.register_phone,
   message: state.auth.message,
 });
 
 const mapActionToProps = (dispatch) =>
   bindActionCreators(
     {
-      register: authActions.reqRegisterComplete,
+      register: authActions.reqRegister,
       clearMsg: authActions.clearMsg,
     },
     dispatch
   );
 
-const RegisterComplete = ({ isError, loading, email, phone, message, register, clearMsg }) => {
-  const [full_name, setFullName] = useState('');
+const Register = ({ isError, loading, message, register, clearMsg }) => {
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
   const [inputError, setInputError] = useState({
-    full_name: '',
+    email: '',
     password: '',
   });
   const [response, setResponse] = useState({
@@ -46,24 +44,30 @@ const RegisterComplete = ({ isError, loading, email, phone, message, register, c
     }
   }, [message, loading, isError, clearMsg]);
 
-  function handleName(e) {
+  function handleEmail(e) {
     const inputValue = e.target.value;
+
+    // eslint-disable-next-line
+    const emailFormat = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
     if (!inputValue) {
+      setEmail('');
       setInputError((prevState) => ({
         ...prevState,
-        full_name: 'Nama tidak boleh kosong',
+        email: 'Email harus diisi',
       }));
-    } else if (inputValue.length < 3) {
+    } else if (!inputValue.match(emailFormat)) {
+      setEmail('');
       setInputError((prevState) => ({
         ...prevState,
-        full_name: 'Nama lengkap minimal 3 karakter',
+        email: 'Format Email Salah',
       }));
     } else {
       setInputError((prevState) => ({
         ...prevState,
-        full_name: '',
+        email: '',
       }));
-      setFullName(inputValue);
+      setEmail(inputValue);
     }
   }
 
@@ -91,8 +95,11 @@ const RegisterComplete = ({ isError, loading, email, phone, message, register, c
 
   function handleSubmit(e) {
     e.preventDefault();
-    if (full_name && password) {
-      register({ full_name, password });
+    if (email) {
+      register({
+        email,
+        type: 'email',
+      });
     }
   }
   return (
@@ -102,7 +109,7 @@ const RegisterComplete = ({ isError, loading, email, phone, message, register, c
         <div className="link-anchor">
           <Link to="/" />
           <img className="logo" src="/assets/icons/belanjaku.png" alt="logo" />
-        </div>{' '}
+        </div>
       </div>
       <div className="content container">
         <div className="row">
@@ -118,66 +125,70 @@ const RegisterComplete = ({ isError, loading, email, phone, message, register, c
           <div className="card-wrapper col-lg-6">
             <div className="card">
               <div className="head text-center">
-                <h3>Daftar dengan {email ? 'Email' : 'Telephone'}</h3>
-                <span>{email ? email : phone}</span>
+                <h3>Masuk Akun</h3>
+                <span>Belum punya akun Belanjaku?</span>
+                <Link to="/register" className="link-word">
+                  {' '}
+                  Daftar
+                </Link>
               </div>
+              <div className="oauth-wrapper">
+                <div className="oauth link-anchor">
+                  <a href={`${SERVER_DOMAIN}/user/auth/facebook`}>
+                    <div className="d-none">Link Anchor</div>
+                  </a>
+                  <img src="/assets/icons/ic_facebook.png" alt="facebook" />
+                  <span>Facebook</span>
+                </div>
+                <div className="oauth link-anchor">
+                  <a href={`${SERVER_DOMAIN}/user/auth/google`}>
+                    <div className="d-none">Link Anchor</div>
+                  </a>
+                  <img src="/assets/icons/ic_google.png" alt="google" />
+                  <span>Google</span>
+                </div>
+              </div>
+              <span className="auth-separator">Atau Masuk dengan</span>
               <form onSubmit={handleSubmit}>
-                <div className="form-group" style={{ marginTop: '1rem' }}>
-                  <label htmlFor="full_name">Nama Lengkap</label>
+                <div className="form-group">
+                  <label htmlFor="email_phone">Email</label>
                   <input
                     type="text"
-                    name="full_name"
-                    onChange={handleName}
+                    name="email_phone"
+                    onChange={handleEmail}
                     className="form-control"
-                    style={inputError.full_name ? { borderColor: 'rgb(239, 20, 74)' } : {}}
-                    autoComplete="off"
+                    style={inputError.email ? { borderColor: 'rgb(239, 20, 74)' } : {}}
                   />
                   <span
                     className="error"
-                    style={inputError.full_name ? { color: 'rgb(239, 20, 74)' } : {}}
+                    style={inputError.email ? { color: 'rgb(239, 20, 74)' } : {}}
                   >
-                    {inputError.full_name}
+                    {!inputError.email && !email ? 'Example: email@belanjaku.id' : inputError.email}
                   </span>
                 </div>
-                <div className="form-group" style={{ marginBottom: '2rem' }}>
+                <div className="form-group">
                   <label htmlFor="password">Password</label>
                   <input
-                    type={showPassword ? 'text' : 'password'}
+                    type="password"
                     name="password"
                     onChange={handlePassword}
-                    onFocus={(e) => {
-                      e.target.readOnly = false;
-                    }}
-                    onBlur={(e) => {
-                      e.target.readOnly = true;
-                    }}
                     className="form-control"
                     style={inputError.password ? { borderColor: 'rgb(239, 20, 74)' } : {}}
-                    readOnly
-                    autoComplete="off"
                   />
                   <span
                     className="error"
                     style={inputError.password ? { color: 'rgb(239, 20, 74)' } : {}}
                   >
-                    {!inputError.password && !password ? 'Minimal 8 karakter' : inputError.password}
+                    {!inputError.password && !password ? 'Minimal 8 Karakter' : inputError.password}
                   </span>
-                  <i
-                    className={`fa fa-eye${showPassword ? '' : '-slash'}`}
-                    aria-hidden="true"
-                    onClick={() => {
-                      setShowPassword((prevState) => !prevState);
-                    }}
-                  ></i>
                 </div>
                 <button
-                  type="submit"
                   className={ClassNames('submit-btn', {
-                    'is-valid': password && full_name,
+                    'is-valid': email && password,
                   })}
-                  disabled={password && full_name ? false : true}
+                  disabled={email && password ? false : true}
                 >
-                  Selesai
+                  Masuk
                 </button>
               </form>
               <div className="disclaimer">
@@ -210,14 +221,12 @@ const RegisterComplete = ({ isError, loading, email, phone, message, register, c
   );
 };
 
-RegisterComplete.propTypes = {
+Register.propTypes = {
   isError: PropTypes.bool,
   loading: PropTypes.bool,
   message: PropTypes.string,
   register: PropTypes.func,
   clearMsg: PropTypes.func,
-  email: PropTypes.string,
-  phone: PropTypes.string,
 };
 
-export default connect(mapStateToProps, mapActionToProps)(RegisterComplete);
+export default connect(mapStateToProps, mapActionToProps)(Register);

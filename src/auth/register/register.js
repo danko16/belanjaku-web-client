@@ -8,7 +8,7 @@ import { SERVER_DOMAIN } from '../../utils/api';
 import { authActions } from '../../redux/reducers/auth';
 import ResponseMessage from '../../shared/response_message';
 
-import './css/register.css';
+import '../css/auth.css';
 
 const mapStateToProps = (state) => ({
   isError: state.auth.is_error,
@@ -68,7 +68,7 @@ const Register = ({ isError, loading, message, register, clearMsg }) => {
     }
   }
   return (
-    <div className="register">
+    <div className="auth">
       {response.message && <ResponseMessage response={response} setResponse={setResponse} />}
       <div className="header">
         <div className="link-anchor">
@@ -92,7 +92,10 @@ const Register = ({ isError, loading, message, register, clearMsg }) => {
               <div className="head text-center">
                 <h3>Daftar Sekarang</h3>
                 <span>Sudah punya akun Belanjaku?</span>
-                <span className="link-word"> Masuk</span>
+                <Link to="/login" className="link-word">
+                  {' '}
+                  Masuk
+                </Link>
               </div>
               <div className="oauth-wrapper">
                 <div className="oauth link-anchor">

@@ -20,7 +20,7 @@ const Header = () => {
     if (window.pageYOffset > 32) {
       navbarRef.current.classList.add('sticky');
       navbarCollapse.current.classList.add('sticky-nav-collapse');
-      document.querySelector('.main').style.paddingTop = '44px';
+      document.querySelector('.main').style.paddingTop = '54px';
     } else {
       navbarRef.current.classList.remove('sticky');
       navbarCollapse.current.classList.remove('sticky-nav-collapse');
