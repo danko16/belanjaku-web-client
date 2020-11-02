@@ -4,6 +4,21 @@ import { authActions, AUTH_ACTIONS } from '../reducers/auth';
 import authApi from '../api/auth';
 import { getErrorMessage } from '../../utils/api';
 
+function* login({ value }) {
+  try {
+    const {
+      data: { data },
+    } = yield call(authApi.login, value);
+
+    if (data) {
+      yield put(authActions.login({ login_token: data.token, user: data.user }));
+      yield put(push('/'));
+    }
+  } catch (error) {
+    yield put(authActions.message({ is_error: true, message: getErrorMessage(error) }));
+  }
+}
+
 function* register({ value }) {
   try {
     const {
@@ -39,7 +54,7 @@ function* confirmOtp({ value }) {
       yield put(authActions.confirmOtp(data.register_token));
     }
   } catch (error) {
-    if (error.response && error.response.data && error.response.data.included === 'unmatch_otp') {
+    if (error.response && error.response.data && error.response.data.included === 'show_error') {
       yield put(authActions.message({ is_error: true, message: getErrorMessage(error) }));
     } else {
       yield put(authActions.setData('confirm_token', null));
@@ -68,6 +83,7 @@ function* registerComplete({ value }) {
 function* authSaga() {
   try {
     yield all([
+      takeLatest(AUTH_ACTIONS.REQ_LOGIN, login),
       takeLatest(AUTH_ACTIONS.REQ_REGISTER, register),
       takeLatest(AUTH_ACTIONS.REQ_CONFIRM_OTP, confirmOtp),
       takeLatest(AUTH_ACTIONS.REQ_REGISTER_COMPLETE, registerComplete),

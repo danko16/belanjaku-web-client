@@ -70,15 +70,17 @@ const RegisterComplete = ({ isError, loading, email, phone, message, register, c
   function handlePassword(e) {
     const inputValue = e.target.value;
 
-    if (!inputValue) {
-      setInputError((prevState) => ({
-        ...prevState,
-        password: 'Password tidak boleh kosong',
-      }));
-    } else if (inputValue.length < 8) {
+    const passwordFormat = /^(?=.*[a-zA-Z]).{8,}$/;
+
+    if (inputValue.length < 8) {
       setInputError((prevState) => ({
         ...prevState,
         password: 'Password minimal 8 karakter',
+      }));
+    } else if (!inputValue.match(passwordFormat)) {
+      setInputError((prevState) => ({
+        ...prevState,
+        password: 'Password harus memiliki huruf alfabet',
       }));
     } else {
       setInputError((prevState) => ({

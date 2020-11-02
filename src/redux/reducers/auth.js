@@ -1,8 +1,10 @@
 export const AUTH_ACTIONS = Object.freeze({
   SET_DATA: 'belanjaku/auth/set-data',
+  REQ_LOGIN: 'belanjaku/auth/req/login',
   REQ_REGISTER: 'belanjaku/auth/req/register',
   REQ_CONFIRM_OTP: 'belanjaku/auth/req/confirm-otp',
   REQ_REGISTER_COMPLETE: 'belanjaku/auth/req/register-complete',
+  LOGIN: 'belanjaku/auth/login',
   REGISTER: 'belanjaku/auth/register',
   CONFIRM_OTP: 'belanjaku/auth/confirm-otp',
   REGISTER_COMPLETE: 'belanjaku/auth/register-complete',
@@ -17,6 +19,10 @@ export const authActions = Object.freeze({
     field,
     value,
   }),
+  reqLogin: (value) => ({
+    type: AUTH_ACTIONS.REQ_LOGIN,
+    value,
+  }),
   reqRegister: (value) => ({
     type: AUTH_ACTIONS.REQ_REGISTER,
     value,
@@ -27,6 +33,10 @@ export const authActions = Object.freeze({
   }),
   reqRegisterComplete: (value) => ({
     type: AUTH_ACTIONS.REQ_REGISTER_COMPLETE,
+    value,
+  }),
+  login: (value) => ({
+    type: AUTH_ACTIONS.LOGIN,
     value,
   }),
   register: (value) => ({
@@ -71,6 +81,7 @@ const reducer = (state = initalState, { type, field, value }) => {
         ...state,
         [field]: value,
       };
+    case AUTH_ACTIONS.REQ_LOGIN:
     case AUTH_ACTIONS.REQ_REGISTER:
     case AUTH_ACTIONS.REQ_CONFIRM_OTP:
     case AUTH_ACTIONS.REQ_REGISTER_COMPLETE:
@@ -102,6 +113,7 @@ const reducer = (state = initalState, { type, field, value }) => {
         loading: false,
         is_error: false,
       };
+    case AUTH_ACTIONS.LOGIN:
     case AUTH_ACTIONS.REGISTER_COMPLETE:
       return {
         ...state,

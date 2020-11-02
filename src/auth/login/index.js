@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import ClassNames from 'classnames';
+import QS from 'query-string';
 import { Link } from 'react-router-dom';
 import { SERVER_DOMAIN } from '../../utils/api';
 import { authActions } from '../../redux/reducers/auth';
@@ -19,13 +20,14 @@ const mapStateToProps = (state) => ({
 const mapActionToProps = (dispatch) =>
   bindActionCreators(
     {
-      register: authActions.reqRegister,
+      reqLogin: authActions.reqLogin,
+      login: authActions.login,
       clearMsg: authActions.clearMsg,
     },
     dispatch
   );
 
-const Register = ({ isError, loading, message, register, clearMsg }) => {
+const Login = ({ isError, loading, message, reqLogin, login, clearMsg, history }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [inputError, setInputError] = useState({
@@ -36,6 +38,37 @@ const Register = ({ isError, loading, message, register, clearMsg }) => {
     message: '',
     isError: false,
   });
+
+  useEffect(() => {
+    const query = history.location.search;
+    const parseQuery = QS.parse(query);
+    if (
+      query &&
+      parseQuery.key &&
+      parseQuery.exp &&
+      parseQuery.id &&
+      parseQuery.type &&
+      parseQuery.full_name &&
+      (parseQuery.email || parseQuery.phone)
+    ) {
+      login({
+        login_token: {
+          key: parseQuery.key,
+          exp: parseQuery.exp,
+        },
+        user: {
+          id: parseQuery.id,
+          full_name: parseQuery.full_name,
+          email: parseQuery.email,
+          phone: parseQuery.phone,
+          avatar: parseQuery.avatar,
+          type: parseQuery.type,
+        },
+      });
+
+      history.push('/');
+    }
+  }, [history, login]);
 
   useEffect(() => {
     if (!loading && message) {
@@ -74,15 +107,17 @@ const Register = ({ isError, loading, message, register, clearMsg }) => {
   function handlePassword(e) {
     const inputValue = e.target.value;
 
-    if (!inputValue) {
-      setInputError((prevState) => ({
-        ...prevState,
-        password: 'Password tidak boleh kosong',
-      }));
-    } else if (inputValue.length < 8) {
+    const passwordFormat = /^(?=.*[a-zA-Z]).{8,}$/;
+
+    if (inputValue.length < 8) {
       setInputError((prevState) => ({
         ...prevState,
         password: 'Password minimal 8 karakter',
+      }));
+    } else if (!inputValue.match(passwordFormat)) {
+      setInputError((prevState) => ({
+        ...prevState,
+        password: 'Password harus memiliki huruf alfabet',
       }));
     } else {
       setInputError((prevState) => ({
@@ -95,10 +130,12 @@ const Register = ({ isError, loading, message, register, clearMsg }) => {
 
   function handleSubmit(e) {
     e.preventDefault();
-    if (email) {
-      register({
+    if (email && password) {
+      reqLogin({
         email,
+        password,
         type: 'email',
+        remember_me: false,
       });
     }
   }
@@ -221,12 +258,14 @@ const Register = ({ isError, loading, message, register, clearMsg }) => {
   );
 };
 
-Register.propTypes = {
+Login.propTypes = {
   isError: PropTypes.bool,
   loading: PropTypes.bool,
   message: PropTypes.string,
-  register: PropTypes.func,
+  login: PropTypes.func,
+  reqLogin: PropTypes.func,
   clearMsg: PropTypes.func,
+  history: PropTypes.object,
 };
 
-export default connect(mapStateToProps, mapActionToProps)(Register);
+export default connect(mapStateToProps, mapActionToProps)(Login);

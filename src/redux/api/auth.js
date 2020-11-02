@@ -1,6 +1,12 @@
 import { Api } from '../../utils/api';
 
 export default Object.freeze({
+  login: (payload) =>
+    Api.post('/user/auth/login', payload, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }),
   register: (payload) =>
     Api.post('/user/auth/register', payload, {
       headers: {
