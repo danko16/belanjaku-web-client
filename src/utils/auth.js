@@ -13,25 +13,30 @@ export const isAuthenticated = (type) => {
     switch (type) {
       case 'login':
         token = auth.login_token;
-        if (now > token.exp || !auth.is_authorized) {
+        if (!token || now > token.exp || !auth.is_authorized) {
           return false;
         }
-        break;
-      case 'confirm':
-        token = auth.confirm_token;
-        if (now > token.exp) {
-          return false;
-        }
-        break;
+        return true;
       case 'register':
         token = auth.register_token;
-        if (now > token.exp) {
-          return false;
-        }
+        break;
+      case 'reset':
+        token = auth.reset_token;
+        break;
+      case 'confirm_login':
+        token = auth.confirm_login_token;
+        break;
+      case 'confirm_register':
+        token = auth.confirm_register_token;
+        break;
+      case 'confirm_reset':
+        token = auth.confirm_reset_token;
         break;
       default:
         return false;
     }
+
+    if (!token || now > token.exp) return false;
 
     return true;
   } catch (err) {

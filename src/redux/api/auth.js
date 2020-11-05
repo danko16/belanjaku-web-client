@@ -27,4 +27,24 @@ export default Object.freeze({
         'x-register-token': token,
       },
     }),
+  forgotPassword: (payload) =>
+    Api.post('/user/auth/forgot-password', payload, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }),
+  confirmResetOtp: (payload, token) =>
+    Api.post('/user/auth/forgot-password/confirm-otp', payload, {
+      headers: {
+        'Content-Type': 'application/json',
+        'x-confirm-token': token,
+      },
+    }),
+  resetPassword: (payload, token) =>
+    Api.post('/user/auth/reset-password', payload, {
+      headers: {
+        'Content-Type': 'application/json',
+        'x-reset-token': token,
+      },
+    }),
 });

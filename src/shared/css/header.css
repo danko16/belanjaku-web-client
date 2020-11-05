@@ -5,6 +5,7 @@
 .header .navbar > div {
   display: flex;
   align-items: center;
+  cursor: pointer;
 }
 
 .header .navbar .cart {

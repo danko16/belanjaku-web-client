@@ -10,8 +10,10 @@ import Register from './register';
 import ConfirmOtp from './confirm_otp';
 import RegisterComplete from './register_complete';
 
+import '../css/auth.css';
+
 const mapStateToProps = (state) => ({
-  confirmToken: state.auth.confirm_token,
+  confirmToken: state.auth.confirm_register_token,
   registerToken: state.auth.register_token,
 });
 
@@ -36,7 +38,7 @@ const RegisterMain = ({ history, confirmToken, registerToken, setData, confirmOt
   }, [history, setData, confirmOtp]);
 
   function renderRegister() {
-    if (confirmToken && isAuthenticated('confirm')) {
+    if (confirmToken && isAuthenticated('confirm_register')) {
       return <ConfirmOtp />;
     } else if (registerToken && isAuthenticated('register')) {
       return <RegisterComplete />;
@@ -44,7 +46,7 @@ const RegisterMain = ({ history, confirmToken, registerToken, setData, confirmOt
       return <Register />;
     }
   }
-  return <div>{renderRegister()}</div>;
+  return <div className="auth">{renderRegister()}</div>;
 };
 
 RegisterMain.propTypes = {

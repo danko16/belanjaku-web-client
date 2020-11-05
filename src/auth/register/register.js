@@ -8,8 +8,6 @@ import { SERVER_DOMAIN } from '../../utils/api';
 import { authActions } from '../../redux/reducers/auth';
 import ResponseMessage from '../../shared/response_message';
 
-import '../css/auth.css';
-
 const mapStateToProps = (state) => ({
   isError: state.auth.is_error,
   loading: state.auth.loading,
@@ -68,7 +66,7 @@ const Register = ({ isError, loading, message, register, clearMsg }) => {
     }
   }
   return (
-    <div className="auth">
+    <div className="register">
       {response.message && <ResponseMessage response={response} setResponse={setResponse} />}
       <div className="header">
         <div className="link-anchor">
@@ -130,6 +128,7 @@ const Register = ({ isError, loading, message, register, clearMsg }) => {
                   </span>
                 </div>
                 <button
+                  type="submit"
                   className={ClassNames('submit-btn', {
                     'is-valid': email,
                   })}

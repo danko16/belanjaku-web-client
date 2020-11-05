@@ -30,6 +30,8 @@ const mapActionToProps = (dispatch) =>
 const Login = ({ isError, loading, message, reqLogin, login, clearMsg, history }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
   const [inputError, setInputError] = useState({
     email: '',
     password: '',
@@ -135,30 +137,21 @@ const Login = ({ isError, loading, message, reqLogin, login, clearMsg, history }
         email,
         password,
         type: 'email',
-        remember_me: false,
+        remember_me: rememberMe,
       });
     }
   }
   return (
     <div className="auth">
-      {response.message && <ResponseMessage response={response} setResponse={setResponse} />}
-      <div className="header">
-        <div className="link-anchor">
-          <Link to="/" />
-          <img className="logo" src="/assets/icons/belanjaku.png" alt="logo" />
-        </div>
-      </div>
-      <div className="content container">
-        <div className="row">
-          <div className="logo-wrapper col-lg-6">
-            <div style={{ maxWidth: 425 }}>
-              <img className="img__cover" src="/assets/images/logo.jpg" alt="Logo" />
-              <div className="logo-cap">
-                <h3>Jual Beli Mudah Hanya di Belanjaku</h3>
-                <div>Gabung dan rasakan kemudahan bertransaksi di Belanjaku</div>
-              </div>
-            </div>
+      <div className="login">
+        {response.message && <ResponseMessage response={response} setResponse={setResponse} />}
+        <div className="header">
+          <div className="link-anchor">
+            <Link to="/" />
+            <img className="logo" src="/assets/icons/belanjaku.png" alt="logo" />
           </div>
+        </div>
+        <div className="content container">
           <div className="card-wrapper col-lg-6">
             <div className="card">
               <div className="head text-center">
@@ -200,13 +193,13 @@ const Login = ({ isError, loading, message, reqLogin, login, clearMsg, history }
                     className="error"
                     style={inputError.email ? { color: 'rgb(239, 20, 74)' } : {}}
                   >
-                    {!inputError.email && !email ? 'Example: email@belanjaku.id' : inputError.email}
+                    {inputError.email}
                   </span>
                 </div>
                 <div className="form-group">
                   <label htmlFor="password">Password</label>
                   <input
-                    type="password"
+                    type={showPassword ? 'text' : 'password'}
                     name="password"
                     onChange={handlePassword}
                     className="form-control"
@@ -216,10 +209,34 @@ const Login = ({ isError, loading, message, reqLogin, login, clearMsg, history }
                     className="error"
                     style={inputError.password ? { color: 'rgb(239, 20, 74)' } : {}}
                   >
-                    {!inputError.password && !password ? 'Minimal 8 Karakter' : inputError.password}
+                    {inputError.password}
                   </span>
+                  <i
+                    className={`fa fa-eye${showPassword ? '' : '-slash'}`}
+                    aria-hidden="true"
+                    onClick={() => {
+                      setShowPassword((prevState) => !prevState);
+                    }}
+                  ></i>
+                </div>
+                <div className="extra-login">
+                  <div className="form-group remember-me">
+                    <input
+                      type="checkbox"
+                      onChange={() => {
+                        setRememberMe((prevState) => !prevState);
+                      }}
+                    />
+                    <span>Ingat Saya</span>
+                  </div>
+                  <div className="reset-password">
+                    <Link className="link-word" to="/reset-password">
+                      Lupa password
+                    </Link>
+                  </div>
                 </div>
                 <button
+                  type="submit"
                   className={ClassNames('submit-btn', {
                     'is-valid': email && password,
                   })}
@@ -239,19 +256,19 @@ const Login = ({ isError, loading, message, reqLogin, login, clearMsg, history }
             </div>
           </div>
         </div>
-      </div>
-      <div className="footer">
-        <div className="container">
-          <span
-            style={{
-              borderRight: '1px solid #d8d8d8',
-              marginRight: '10px',
-              paddingRight: '10px',
-            }}
-          >
-            ©2020, PT Belanjaku
-          </span>
-          <span className="link-word">Belanjaku Care</span>
+        <div className="footer">
+          <div className="container">
+            <span
+              style={{
+                borderRight: '1px solid #d8d8d8',
+                marginRight: '10px',
+                paddingRight: '10px',
+              }}
+            >
+              ©2020, PT Belanjaku
+            </span>
+            <span className="link-word">Belanjaku Care</span>
+          </div>
         </div>
       </div>
     </div>

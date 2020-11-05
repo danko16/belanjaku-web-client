@@ -7,6 +7,7 @@ import './App.css';
 
 import Register from './auth/register';
 import Login from './auth/login';
+import ResetPassword from './auth/reset_password';
 import Header from './shared/header';
 import Home from './home';
 
@@ -25,6 +26,7 @@ function App() {
               </Route>
               <Route path="/register" component={Register} />
               <Route path="/login" component={Login} />
+              <Route path="/reset-password" component={ResetPassword} />
               <Route component={NoMatch} />
             </Switch>
           </div>

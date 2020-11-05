@@ -9,18 +9,18 @@ import ResponseMessage from '../../shared/response_message';
 const mapStateToProps = (state) => ({
   loading: state.auth.loading,
   message: state.auth.message,
-  email: state.auth.register_email,
-  phone: state.auth.register_phone,
+  email: state.auth.reset_email,
+  phone: state.auth.reset_phone,
   isError: state.auth.is_error,
 });
 
 const mapActionToProps = (dispatch) =>
   bindActionCreators(
-    { confirmOtp: authActions.reqConfirmOtp, clearMsg: authActions.clearMsg },
+    { confirmOtp: authActions.reqConfirmReset, clearMsg: authActions.clearMsg },
     dispatch
   );
 
-const ConfirmOtp = ({ confirmOtp, clearMsg, email, phone, loading, message, isError }) => {
+const ConfirmOtp = ({ confirmOtp, clearMsg, email, phone, loading, message, isError, history }) => {
   const [otp, setOtp] = useState({
     firstInput: '',
     secondInput: '',
@@ -100,7 +100,16 @@ const ConfirmOtp = ({ confirmOtp, clearMsg, email, phone, loading, message, isEr
   return (
     <div className="confirm-otp">
       {response.message && <ResponseMessage response={response} setResponse={setResponse} />}
-      <div className="header">Verifikasi {email ? 'Email' : 'Nomor Telephone'}</div>
+      <div className="header">
+        <i
+          onClick={() => {
+            history.push('/login');
+          }}
+          className="fa fa-arrow-left"
+          aria-hidden="true"
+        ></i>
+        <div>Verifikasi {email ? 'Email' : 'Nomor Telephone'}</div>
+      </div>
       <div className="content">
         <i className="fa fa-envelope" aria-hidden="true"></i>
         <h4>Masukkan Kode Verifikasi</h4>
@@ -217,6 +226,7 @@ const ConfirmOtp = ({ confirmOtp, clearMsg, email, phone, loading, message, isEr
 };
 
 ConfirmOtp.propTypes = {
+  history: PropTypes.object,
   message: PropTypes.string,
   loading: PropTypes.bool,
   isError: PropTypes.bool,

@@ -7,8 +7,6 @@ import { Link } from 'react-router-dom';
 import { authActions } from '../../redux/reducers/auth';
 import ResponseMessage from '../../shared/response_message';
 
-import '../css/auth.css';
-
 const mapStateToProps = (state) => ({
   isError: state.auth.is_error,
   loading: state.auth.loading,
@@ -98,7 +96,7 @@ const RegisterComplete = ({ isError, loading, email, phone, message, register, c
     }
   }
   return (
-    <div className="auth">
+    <div className="register-complete">
       {response.message && <ResponseMessage response={response} setResponse={setResponse} />}
       <div className="header">
         <div className="link-anchor">
