@@ -1,10 +1,17 @@
 import React, { useLayoutEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import ClassNames from 'classnames';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { isAuthenticated } from '../utils/auth';
 
 import './css/header.css';
 
-const Header = () => {
+const mapStateToProps = (state) => ({
+  isAuthorized: state.auth.is_authorized,
+});
+
+const Header = ({ isAuthorized }) => {
   const [navCollapse, setNavCollapse] = useState(false);
   const navbarRef = useRef();
   const navbarCollapse = useRef();
@@ -63,14 +70,27 @@ const Header = () => {
         <div className="cart">
           <i className="fa fa-shopping-cart" aria-hidden="true"></i>
         </div>
-        <div className="auth-link">
-          <Link to="/login" className="login">
-            Masuk
-          </Link>
-          <Link to="/register" className="register">
-            Daftar
-          </Link>
-        </div>
+        {isAuthorized && isAuthenticated('login') && (
+          <div className="notif">
+            <i className="fa fa-bell" aria-hidden="true"></i>
+          </div>
+        )}
+        <div className="separator"></div>
+        {isAuthorized && isAuthenticated('login') ? (
+          <div className="profile-wrapper">
+            <div className="shop">Toko</div>
+            <div className="profile">Danang</div>
+          </div>
+        ) : (
+          <div className="auth-link">
+            <Link to="/login" className="login">
+              Masuk
+            </Link>
+            <Link to="/register" className="register">
+              Daftar
+            </Link>
+          </div>
+        )}
         <div
           className="toggler"
           onClick={() => {
@@ -102,4 +122,8 @@ const Header = () => {
   );
 };
 
-export default Header;
+Header.propTypes = {
+  isAuthorized: PropTypes.bool,
+};
+
+export default connect(mapStateToProps)(Header);

@@ -1,6 +1,7 @@
 import { Api } from '../../utils/api';
 
 export default Object.freeze({
+  isAllow: () => Api.post('/user/auth/is-allow'),
   login: (payload) =>
     Api.post('/user/auth/login', payload, {
       headers: {

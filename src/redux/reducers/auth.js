@@ -1,4 +1,5 @@
 export const AUTH_ACTIONS = Object.freeze({
+  FLOW: 'belanjaku/auth/flow',
   SET_DATA: 'belanjaku/auth/set-data',
   REQ_LOGIN: 'belanjaku/auth/req/login',
   REQ_REGISTER: 'belanjaku/auth/req/register',
@@ -20,6 +21,7 @@ export const AUTH_ACTIONS = Object.freeze({
 });
 
 export const authActions = Object.freeze({
+  flow: () => ({ type: AUTH_ACTIONS.FLOW }),
   setData: (field, value) => ({
     type: AUTH_ACTIONS.SET_DATA,
     field,
@@ -64,6 +66,10 @@ const initalState = {
 
 const reducer = (state = initalState, { type, field, value }) => {
   switch (type) {
+    case AUTH_ACTIONS.FLOW:
+      return {
+        ...state,
+      };
     case AUTH_ACTIONS.SET_DATA:
       return {
         ...state,

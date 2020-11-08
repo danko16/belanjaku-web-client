@@ -123,3 +123,7 @@ img.logo {
   top: 0;
   width: 100%;
 }
+
+.border-right {
+  border-right: 1px solid #b8b8b8 !important;
+}

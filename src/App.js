@@ -1,7 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { ConnectedRouter } from 'connected-react-router';
-import { history } from './redux';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import PropTypes from 'prop-types';
+import { history, store } from './redux';
+import { Api } from './utils/api';
+import { authActions } from './redux/reducers/auth';
 
 import './App.css';
 
@@ -13,7 +18,29 @@ import Home from './home';
 
 const NoMatch = React.lazy(() => import('./shared/no_match'));
 
-function App() {
+const mapActionToProps = (dispatch) => bindActionCreators({ authFlow: authActions.flow }, dispatch);
+
+Api.interceptors.request.use(
+  function (config) {
+    const { auth } = store.getState();
+    const token = auth.login_token;
+
+    if (token) {
+      config.headers['x-token'] = `Bearer ${token.key}`;
+    }
+
+    return config;
+  },
+  function (error) {
+    return Promise.reject(error);
+  }
+);
+
+function App({ authFlow }) {
+  useEffect(() => {
+    authFlow();
+  }, [authFlow]);
+
   return (
     <Router>
       <ConnectedRouter history={history}>
@@ -36,4 +63,8 @@ function App() {
   );
 }
 
-export default App;
+App.propTypes = {
+  authFlow: PropTypes.func,
+};
+
+export default connect(null, mapActionToProps)(App);
