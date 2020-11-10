@@ -47,6 +47,7 @@ export const authActions = Object.freeze({
 });
 
 const initalState = {
+  is_online: false,
   is_authorized: false,
   confirm_register_token: null,
   confirm_reset_token: null,
