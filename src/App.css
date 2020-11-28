@@ -127,3 +127,17 @@ img.logo {
 .border-right {
   border-right: 1px solid #b8b8b8 !important;
 }
+
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1140px;
+    padding: 0;
+  }
+}
+
+@media (min-width: 1280px) {
+  .container {
+    max-width: 1208px;
+    padding: 0;
+  }
+}

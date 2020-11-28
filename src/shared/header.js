@@ -27,11 +27,11 @@ const Header = ({ isAuthorized }) => {
     if (window.pageYOffset > 32) {
       navbarRef.current.classList.add('sticky');
       navbarCollapse.current.classList.add('sticky-nav-collapse');
-      document.querySelector('.main').style.paddingTop = '54px';
+      document.querySelector('.App').style.paddingTop = '54px';
     } else {
       navbarRef.current.classList.remove('sticky');
       navbarCollapse.current.classList.remove('sticky-nav-collapse');
-      document.querySelector('.main').style.paddingTop = '0';
+      document.querySelector('.App').style.paddingTop = '0';
     }
   }
   return (
@@ -77,10 +77,32 @@ const Header = ({ isAuthorized }) => {
         )}
         <div className="separator"></div>
         {isAuthorized && isAuthenticated('login') ? (
-          <div className="profile-wrapper">
-            <div className="shop">Toko</div>
-            <div className="profile">Danang</div>
-          </div>
+          <>
+            <div className="shop">
+              <img
+                className="shop-img"
+                src="/assets/icons/ic_shop.png"
+                alt="shop"
+                style={{
+                  width: 24,
+                  height: 'auto',
+                }}
+              />
+              <div>Toko</div>
+            </div>
+            <div className="profile">
+              <img
+                className="avatar"
+                src="/assets/icons/ic_people.png"
+                alt="avatar"
+                style={{
+                  width: 28,
+                  height: 'auto',
+                }}
+              />
+              <div>Danang</div>
+            </div>
+          </>
         ) : (
           <div className="auth-link">
             <Link to="/login" className="login">
@@ -101,22 +123,62 @@ const Header = ({ isAuthorized }) => {
         </div>
       </div>
       <div ref={navbarCollapse} className={ClassNames('navbar-collapse', { show: navCollapse })}>
-        <div className="link-anchor navbar-brand">
-          <Link to="/" />
-          <img className="img__cover" src="/assets/icons/belanjaku.png" alt="logo" />
-        </div>
-        <div className="category">
-          <i className="fa fa-th-large" aria-hidden="true"></i>
-          <span>Kategori</span>
-        </div>
-        <div className="auth-link">
-          <Link to="/login" className="login">
-            Masuk
-          </Link>
-          <Link to="/register" className="register">
-            Daftar
-          </Link>
-        </div>
+        {isAuthorized && isAuthenticated('login') ? (
+          <>
+            <div className="profile">
+              <img
+                className="avatar"
+                src="/assets/icons/ic_people.png"
+                alt="avatar"
+                style={{
+                  width: 28,
+                  height: 'auto',
+                }}
+              />
+              <div>Danang</div>
+            </div>
+            <div className="category">
+              <i className="fa fa-th-large" aria-hidden="true"></i>
+              <span>Kategori</span>
+            </div>
+            <div className="shop">
+              <img
+                className="shop-img"
+                src="/assets/icons/ic_shop.png"
+                alt="shop"
+                style={{
+                  width: 24,
+                  height: 'auto',
+                }}
+              />
+              <div>Toko</div>
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="link-anchor navbar-brand">
+              <Link to="/" />
+              <img
+                className="img__cover"
+                src="/assets/icons/belanjaku.png"
+                alt="logo"
+                style={{ width: 145 }}
+              />
+            </div>
+            <div className="category">
+              <i className="fa fa-th-large" aria-hidden="true"></i>
+              <span>Kategori</span>
+            </div>
+            <div className="link-anchor login">
+              <Link to="/login" />
+              <div>Masuk</div>
+            </div>
+            <div className="link-anchor register">
+              <Link to="/register" />
+              <div>Daftar</div>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
