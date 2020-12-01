@@ -2,7 +2,10 @@ import React from 'react';
 import CountDown from '../shared/countdown';
 import ProductWrapper from '../shared/product_wrapper';
 
+import Categories from './categories';
+
 import './css/home.css';
+import './css/categories.css';
 
 const Home = () => {
   function renderCarouselItem() {
@@ -25,7 +28,7 @@ const Home = () => {
       <section className="carousel-slide">
         <div className="carousel-container">{renderCarouselItem()}</div>
       </section>
-      <section className="flash-sale container">
+      <section className="container">
         <div className="title">
           <div>
             <h2>Flash Sale</h2>
@@ -35,15 +38,31 @@ const Home = () => {
         </div>
         <ProductWrapper />
       </section>
-      <section className="flash-sale container">
+      <section className="container">
         <div className="title">
           <div>
-            <h2>Flash Sale</h2>
+            <h2>Kategori Pilihan</h2>
           </div>
-          <CountDown />
+        </div>
+        <Categories />
+      </section>
+      <section className="container">
+        <div className="title">
+          <div>
+            <h2>Belanja Terlaris</h2>
+          </div>
           <div className="link-all">Lihat Semua</div>
         </div>
         <ProductWrapper />
+      </section>
+      <section className="container">
+        <div className="title">
+          <div>
+            <h2>Sedang Trending</h2>
+          </div>
+          <div className="link-all">Lihat Semua</div>
+        </div>
+        <div className="trending-product"></div>
       </section>
     </div>
   );

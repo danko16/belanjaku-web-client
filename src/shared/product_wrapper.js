@@ -236,7 +236,6 @@ const ProductCard = () => {
     if (currentPage === totalPages) return;
     const fullSlide = 100 * currentPage;
 
-    console.log(lastSlide);
     if (totalPages - currentPage === 1) {
       productContainer.current.style.transform = `translateX(-${lastSlide + (fullSlide - 100)}%)`;
     } else {

@@ -1,0 +1,95 @@
+.categories {
+  position: relative;
+}
+
+.categories .ctr1 {
+  overflow: hidden;
+  margin-left: -8px;
+  margin-right: -8px;
+}
+
+.categories .ctr2 {
+  white-space: nowrap;
+  padding-right: 50%;
+  transition: transform 800ms ease 0s;
+}
+
+.categories .category-wrapper {
+  display: inline-block;
+  width: 100%;
+  padding: 0 8px;
+  overflow: hidden;
+}
+
+.categories .category-wrapper img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+.categories .category-wrapper .category-top {
+  margin-bottom: 24px;
+}
+
+.categories .category-wrapper .category-name {
+  font-size: 16px;
+  font-weight: 600;
+  padding: 12px 0;
+  text-align: center;
+}
+
+.categories i.fa.fa-angle-left,
+.categories i.fa.fa-angle-right {
+  position: absolute;
+  visibility: hidden;
+  cursor: pointer;
+  font-size: 24px;
+  background: #fff;
+  border-radius: 50%;
+  transition: all 0.25s ease 0s;
+  box-shadow: rgba(49, 53, 59, 0.12) 0px 1px 6px 0px;
+  width: 34px;
+  height: 34px;
+  top: calc(50% - 34px);
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.categories:hover i.fa.fa-angle-left,
+.categories:hover i.fa.fa-angle-right {
+  visibility: visible;
+}
+
+.categories i.fa.fa-angle-left {
+  left: -17px;
+}
+
+.categories i.fa.fa-angle-right {
+  right: -17px;
+}
+
+@media only screen and (min-width: 576px) {
+  .categories .ctr2 {
+    padding-right: 66.66666%;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .categories .ctr2 {
+    padding-right: 75%;
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  .categories .ctr2 {
+    padding-right: 80%;
+  }
+}
+
+@media only screen and (min-width: 1200px) {
+  .categories .ctr2 {
+    padding-right: 83.3333%;
+  }
+}
